@@ -49,20 +49,13 @@ public class UserMealsUtil {
     public static List<UserMealWithExceed> getFilteredWithExceededToForeach(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
 
         Map<LocalDate, Integer> dateCaloriesSumm = new HashMap<>();
-        int caloriesSum;
         for(UserMeal meal :mealList){
-            LocalDate localDate = meal.getDateTime().toLocalDate();
-            if(dateCaloriesSumm.containsKey(localDate)){
-                caloriesSum = dateCaloriesSumm.get(localDate) + meal.getCalories();
-                dateCaloriesSumm.put(localDate, caloriesSum);
-            }else{
-                dateCaloriesSumm.put(localDate, meal.getCalories());
-            }
+            dateCaloriesSumm.merge(meal.getDateTime().toLocalDate(), meal.getCalories(), Integer::sum);
         }
 
         List<UserMealWithExceed> result = new ArrayList<>();
         for(UserMeal meal :mealList){
-            if(meal.getDateTime().toLocalTime().isBefore(endTime) && meal.getDateTime().toLocalTime().isAfter(startTime)){
+            if(TimeUtil.isBetween(meal.getDateTime().toLocalTime(), startTime, endTime)){
                 int calories = dateCaloriesSumm.get(meal.getDateTime().toLocalDate());
                 result.add(new UserMealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), calories > caloriesPerDay));
             }
