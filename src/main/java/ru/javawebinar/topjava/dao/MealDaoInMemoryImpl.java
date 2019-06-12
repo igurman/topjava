@@ -3,47 +3,51 @@ package ru.javawebinar.topjava.dao;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealDaoInMemoryImpl implements MealDao {
 
-    private CopyOnWriteArrayList<Meal> meals;
-    private AtomicInteger idCount = new AtomicInteger(0);
+    private Map<Integer, Meal> meals = new ConcurrentHashMap<>();
+    private static AtomicInteger idCount = new AtomicInteger(0);
 
     public MealDaoInMemoryImpl() {
-        this.meals = new CopyOnWriteArrayList<>(MealsUtil.getList());
-        idCount.set(this.meals.size());
+//        MealsUtil.getList().forEach(this::create);
+
+        MealsUtil.getList().forEach(meal -> {
+            int id = meal.getId();
+            if (id > idCount.get()) idCount.set(id);
+            meals.put(id, meal);
+        });
     }
 
     @Override
     public void create(Meal meal) {
-        meal.setId(idCount.incrementAndGet());
-        meals.addIfAbsent(meal);
+        int id = idCount.incrementAndGet();
+        meal.setId(id);
+        meals.put(id, meal);
     }
 
     @Override
     public void update(Meal meal) {
-        int i = meals.indexOf(this.getById(meal.getId()));
-        if(i != -1) meals.set(i, meal);
+        meals.put(meal.getId(), meal);
     }
 
     @Override
     public void remove(int id) {
-        meals.removeIf(a -> a.getId() == id);
+        meals.remove(id);
     }
 
     @Override
     public Meal getById(int id) {
-        for(Meal meal :meals) {
-            if (meal.getId() == id) return meal;
-        }
-        return null;
+        return meals.get(id);
     }
 
     @Override
     public List<Meal> list() {
-        return meals;
+        return new ArrayList<>(meals.values());
     }
 }

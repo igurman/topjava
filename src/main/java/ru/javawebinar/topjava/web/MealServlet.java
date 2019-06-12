@@ -25,8 +25,9 @@ public class MealServlet extends HttpServlet {
     private MealDao mealDao;
     private DateTimeFormatter formatter;
 
-    public MealServlet() {
-        super();
+    @Override
+    public void init() throws ServletException {
+        super.init();
         mealDao = new MealDaoInMemoryImpl();
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
@@ -45,12 +46,23 @@ public class MealServlet extends HttpServlet {
                     return;
                 }
             }
+            if (action.equals("edit")) {
+                String id = request.getParameter("id");
+                if (id != null) {
+                    request.setAttribute("meal", mealDao.getById(Integer.parseInt(id)));
+                    request.getRequestDispatcher("/meals-edit.jsp").forward(request, response);
+                    return;
+                }else{
+                    request.setAttribute("meal", null);
+                    request.getRequestDispatcher("/meals-edit.jsp").forward(request, response);
+                    return;
+                }
+            }
         }
         List<MealTo> mealTo = MealsUtil.getFilteredWithExcess(mealDao.list(), LocalTime.MIN, LocalTime.MAX, 2000);
-        request.setAttribute("localDateTimeFormat", DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
+        request.setAttribute("localDateTimeFormat", formatter);
         request.setAttribute("listMeals", mealTo);
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
-
     }
 
     @Override
@@ -63,31 +75,31 @@ public class MealServlet extends HttpServlet {
         String name = req.getParameter("name");
         String calories = req.getParameter("calories");
 
-        if (action != null && date != null && time != null && name != null && calories != null) {
+        if (isFull(action) && isFull(date) && isFull(time) && isFull(name) && isFull(calories)) {
+            Meal meal = new Meal(
+                    0,
+                    LocalDateTime.parse(date + " " + time, formatter),
+                    name,
+                    Integer.parseInt(calories)
+            );
+
             if (action.equals("create")) {
-                mealDao.create(new Meal(
-                                0,
-                                LocalDateTime.parse(date + " " + time, formatter),
-                                name,
-                                Integer.parseInt(calories)
-                        )
-                );
+                mealDao.create(meal);
             }
 
             if (action.equals("update")) {
                 String id = req.getParameter("id");
-                if (id != null) {
-                    mealDao.update(new Meal(
-                                    Integer.parseInt(id),
-                                    LocalDateTime.parse(date + " " + time, formatter),
-                                    name,
-                                    Integer.parseInt(calories)
-                            )
-                    );
+                if (isFull(id)) {
+                    meal.setId(Integer.parseInt(id));
+                    mealDao.update(meal);
                 }
             }
         }
         resp.sendRedirect("meals");
+    }
+
+    private boolean isFull(String t){
+        return t != null && !t.equals("");
     }
 
 }
