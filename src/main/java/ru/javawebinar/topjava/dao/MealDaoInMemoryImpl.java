@@ -15,13 +15,7 @@ public class MealDaoInMemoryImpl implements MealDao {
     private static AtomicInteger idCount = new AtomicInteger(0);
 
     public MealDaoInMemoryImpl() {
-//        MealsUtil.getList().forEach(this::create);
-
-        MealsUtil.getList().forEach(meal -> {
-            int id = meal.getId();
-            if (id > idCount.get()) idCount.set(id);
-            meals.put(id, meal);
-        });
+        MealsUtil.getList().forEach(this::create);
     }
 
     @Override
@@ -33,7 +27,7 @@ public class MealDaoInMemoryImpl implements MealDao {
 
     @Override
     public void update(Meal meal) {
-        meals.put(meal.getId(), meal);
+        meals.putIfAbsent(meal.getId(), meal);
     }
 
     @Override

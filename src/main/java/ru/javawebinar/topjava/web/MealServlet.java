@@ -26,8 +26,7 @@ public class MealServlet extends HttpServlet {
     private DateTimeFormatter formatter;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
+    public void init() {
         mealDao = new MealDaoInMemoryImpl();
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     }
@@ -50,13 +49,11 @@ public class MealServlet extends HttpServlet {
                 String id = request.getParameter("id");
                 if (id != null) {
                     request.setAttribute("meal", mealDao.getById(Integer.parseInt(id)));
-                    request.getRequestDispatcher("/meals-edit.jsp").forward(request, response);
-                    return;
                 }else{
                     request.setAttribute("meal", null);
-                    request.getRequestDispatcher("/meals-edit.jsp").forward(request, response);
-                    return;
                 }
+                request.getRequestDispatcher("/meals-edit.jsp").forward(request, response);
+                return;
             }
         }
         List<MealTo> mealTo = MealsUtil.getFilteredWithExcess(mealDao.list(), LocalTime.MIN, LocalTime.MAX, 2000);
