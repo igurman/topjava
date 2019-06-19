@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.web;
 
-import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
@@ -14,10 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 public class UserServlet extends HttpServlet {
-    private static final Logger log = getLogger(UserServlet.class);
     private UserRepository repository;
 
     @Override
@@ -56,16 +52,22 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
+        String action = request.getParameter("action");
 
-        User user = new User(id.isEmpty() ? null : Integer.valueOf(id),
-                request.getParameter("name"),
-                request.getParameter("email"),
-                request.getParameter("pass"),
-                Role.ROLE_USER
-        );
+        if("choice".equals(action)){
+            SecurityUtil.userId = getId(request);
+            response.sendRedirect("meals");
+        }else{
+            User user = new User(id.isEmpty() ? null : Integer.valueOf(id),
+                    request.getParameter("name"),
+                    request.getParameter("email"),
+                    request.getParameter("pass"),
+                    Role.ROLE_USER
+            );
 
-        repository.save(user);
-        response.sendRedirect("users");
+            repository.save(user);
+            response.sendRedirect("users");
+        }
     }
 
     private int getId(HttpServletRequest request) {

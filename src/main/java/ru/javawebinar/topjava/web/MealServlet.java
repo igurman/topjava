@@ -2,9 +2,9 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepositoryImpl;
-import ru.javawebinar.topjava.service.MealServiceImpl;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
@@ -22,48 +22,37 @@ public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
     private MealRestController mealRestController;
+    private ConfigurableApplicationContext appCtx;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        mealRestController = new MealRestController(new MealServiceImpl(new InMemoryMealRepositoryImpl()));
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        mealRestController = appCtx.getBean(MealRestController.class);
+    }
+    @Override
+    public void destroy() {
+        super.destroy();
+        appCtx.close();
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String action = request.getParameter("action");
+        String id = request.getParameter("id");
+        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
+                LocalDateTime.parse(request.getParameter("dateTime")),
+                request.getParameter("description"),
+                Integer.parseInt(request.getParameter("calories")));
 
-        if (action == null) {
-            String id = request.getParameter("id");
-            Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
-                    LocalDateTime.parse(request.getParameter("dateTime")),
-                    request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories")));
-
-            if (meal.isNew()) {
-                log.info("Create {}", meal);
-                mealRestController.create(meal);
-            } else {
-                log.info("Update {}", meal);
-                mealRestController.update(meal);
-            }
-            response.sendRedirect("meals");
-
-        } else if ("filter".equals(action)) {
-            String startDate = request.getParameter("startDate");
-            String endDate = request.getParameter("endDate");
-            String startTime = request.getParameter("startTime");
-            String endTime = request.getParameter("endTime");
-
-            request.setAttribute("meals", mealRestController.getBetween(
-                    DateTimeUtil.parseDate(startDate),
-                    DateTimeUtil.parseTime(startTime),
-                    DateTimeUtil.parseDate(endDate),
-                    DateTimeUtil.parseTime(endTime)
-                    ));
-            request.getRequestDispatcher("/meals.jsp").forward(request, response);
+        if (meal.isNew()) {
+            log.info("Create {}", meal);
+            mealRestController.create(meal);
+        } else {
+            log.info("Update {}", meal);
+            mealRestController.update(meal, getId(request));
         }
+        response.sendRedirect("meals");
     }
 
     @Override
@@ -84,6 +73,20 @@ public class MealServlet extends HttpServlet {
                         mealRestController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
+                break;
+            case "filter":
+                String startDate = request.getParameter("startDate");
+                String endDate = request.getParameter("endDate");
+                String startTime = request.getParameter("startTime");
+                String endTime = request.getParameter("endTime");
+
+                request.setAttribute("meals", mealRestController.getBetween(
+                        DateTimeUtil.parseDate(startDate),
+                        DateTimeUtil.parseTime(startTime),
+                        DateTimeUtil.parseDate(endDate),
+                        DateTimeUtil.parseTime(endTime)
+                ));
+                request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
             default:
