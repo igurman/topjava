@@ -18,6 +18,10 @@ public class MealTestData {
     public static final Meal MEAL2 = new Meal(START_SEQ + 3, LocalDateTime.of(2019, Month.JUNE, 20, 12, 30), "обед", 1000);
     public static final Meal MEAL3 = new Meal(START_SEQ + 4, LocalDateTime.of(2019, Month.JUNE, 20, 19, 0), "ужин", 800);
 
+    public static final Meal MEAL4 = new Meal(START_SEQ + 5, LocalDateTime.of(2019, Month.JUNE, 20, 9, 15), "завтрак", 500);
+    public static final Meal MEAL5 = new Meal(START_SEQ + 6, LocalDateTime.of(2019, Month.JUNE, 20, 12, 30), "обед", 500);
+    public static final Meal MEAL6 = new Meal(START_SEQ + 7, LocalDateTime.of(2019, Month.JUNE, 20, 19, 0), "ужин", 800);
+
     public static void assertMatch(Meal actual, Meal expected) {
         assertThat(actual).isEqualToComparingFieldByField(expected);
     }
