@@ -1,5 +1,8 @@
 Java Enterprise Online Project 
 ===============================
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0e0e0a9527c940a4b02c6802d4bfec81)](https://app.codacy.com/app/igurman/topjava?utm_source=github.com&utm_medium=referral&utm_content=igurman/topjava&utm_campaign=Badge_Grade_Settings)
+
 Разработка полнофункционального Spring/JPA Enterprise приложения c авторизацией и правами доступа на основе ролей с использованием наиболее популярных инструментов и технологий Java: Maven, Spring MVC, Security, JPA(Hibernate), REST(Jackson), Bootstrap (css,js), datatables, jQuery + plugins, Java 8 Stream and Time API и хранением в базах данных Postgresql и HSQLDB.
 
 ![topjava_structure](https://user-images.githubusercontent.com/13649199/27433714-8294e6fe-575e-11e7-9c41-7f6e16c5ebe5.jpg)
@@ -141,7 +144,7 @@ Java Enterprise Online Project
 
 ### Полезные ресурсы
 > ВНИМАНИЕ:
->  - ДЗ первого урока будет связано с <a href="https://danielniko.wordpress.com/2012/04/17/simple-crud-using-jsp-servlet-and-mysql/">созданием небольшого CRUD приложения (в памяти, без DB) на JSP и сервлетах</a>. Введение будет, но предварительное знакомство не помешает.
+>  - **ДЗ первого урока будет связано с [созданием небольшого CRUD приложения (в памяти, без DB) на JSP и сервлетах](https://danielniko.wordpress.com/2012/04/17/simple-crud-using-jsp-servlet-and-mysql/)**. Введение будет, но предварительное знакомство не помешает.
 >  - основы JavaSсript необходимы для понимания проекта, начиная с 8-го занятия!
 
 Все остальное - опционально.
@@ -174,8 +177,8 @@ Java Enterprise Online Project
 -  <a href="https://github.com/winterbe/java8-tutorial">A Guide to Java 8</a>
 
 ### Туториалы, разное
-[Что нужно знать о бэкенде новичку в веб-разработке](https://tproger.ru/translations/backend-web-development)
-[Туториалы: Spring Framework, Hibernate, Java Core, JDBC](http://proselyte.net/tutorials/)
+- [Что нужно знать о бэкенде новичку в веб-разработке](https://tproger.ru/translations/backend-web-development)
+- [Туториалы: Spring Framework, Hibernate, Java Core, JDBC](http://proselyte.net/tutorials/)
 
 #### Сервлеты
 -  <a href="https://devcolibri.com/как-создать-servlet-полное-руководство/">Как создать Servlet? Полное руководство.</a>
