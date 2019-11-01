@@ -1,6 +1,8 @@
 package ru.javawebinar.topjava.web.user;
 
 import org.junit.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.UserTestData;
@@ -14,13 +16,15 @@ import java.util.Collection;
 import static ru.javawebinar.topjava.UserTestData.ADMIN;
 
 public class InMemoryAdminRestControllerTest {
+    private static final Logger log = LoggerFactory.getLogger(InMemoryAdminRestControllerTest.class);
+
     private static ConfigurableApplicationContext appCtx;
     private static AdminRestController controller;
 
     @BeforeClass
     public static void beforeClass() {
         appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/inmemory.xml");
-        System.out.println("\n" + Arrays.toString(appCtx.getBeanDefinitionNames()) + "\n");
+        log.info("\n{}\n", Arrays.toString(appCtx.getBeanDefinitionNames()));
         controller = appCtx.getBean(AdminRestController.class);
     }
 

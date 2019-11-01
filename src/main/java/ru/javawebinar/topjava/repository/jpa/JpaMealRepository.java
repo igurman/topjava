@@ -8,8 +8,11 @@ import ru.javawebinar.topjava.repository.MealRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+
+import static ru.javawebinar.topjava.util.DateTimeUtil.getEndExclusive;
+import static ru.javawebinar.topjava.util.DateTimeUtil.getStartInclusive;
 
 @Repository
 @Transactional(readOnly = true)
@@ -56,10 +59,11 @@ public class JpaMealRepository implements MealRepository {
     }
 
     @Override
-    public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
+    public List<Meal> getBetweenInclusive(LocalDate startDate, LocalDate endDate, int userId) {
         return em.createNamedQuery(Meal.GET_BETWEEN, Meal.class)
                 .setParameter("userId", userId)
-                .setParameter("startDate", startDate)
-                .setParameter("endDate", endDate).getResultList();
+                .setParameter("startDate", getStartInclusive(startDate))
+                .setParameter("endDate", getEndExclusive(endDate))
+                .getResultList();
     }
 }

@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
 <html>
 <head>
-    <title>Meal</title>
+    <title>Meals</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
