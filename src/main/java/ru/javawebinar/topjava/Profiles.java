@@ -26,4 +26,8 @@ public class Profiles {
             }
         }
     }
+
+    public static String getActiveProfileBoth() {
+        return getActiveDbProfile() + ", " + REPOSITORY_IMPLEMENTATION;
+    }
 }
