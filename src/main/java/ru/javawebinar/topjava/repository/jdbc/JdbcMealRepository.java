@@ -62,9 +62,7 @@ public abstract class JdbcMealRepository implements MealRepository {
         return meal;
     }
 
-    protected <T> T modifyTime(LocalDateTime ldt){
-        return (T) ldt;
-    }
+    protected abstract  <T> T modifyTime(LocalDateTime ldt);
 
     @Override
     public boolean delete(int id, int userId) {

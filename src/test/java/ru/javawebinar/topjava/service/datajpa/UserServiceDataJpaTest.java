@@ -6,6 +6,7 @@ import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserServiceTest;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
@@ -16,5 +17,11 @@ public class UserServiceDataJpaTest extends UserServiceTest {
         User user = service.getWithMeals(USER_ID);
         assertMatch(user, USER);
         MealTestData.assertMatch(user.getMeals(), MealTestData.MEALS);
+    }
+
+    @Test
+    public void getWithMealsNotFound() throws Exception{
+        thrown.expect(NotFoundException.class);
+        service.getWithMeals(1);
     }
 }
