@@ -135,3 +135,185 @@ Maven/ Spring/ Security/ JPA(Hibernate)/ REST(Jackson)/ Bootstrap(CSS)/ jQuery +
 - Собеседование. Разработка ПО
 - Возможные доработки приложения
 - Домашнее задание по проекту: составление резюме
+
+JSON запросы Postman
+{
+	"info": {
+		"name": "Java",
+		"_postman_id": "e2b39b4c-9482-7bdb-75f1-a5593156dee6",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "meals get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals/100002",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals",
+						"100002"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "meals update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 100002,\n    \"dateTime\": \"2015-05-30T10:00:00\",\n    \"description\": \"xxxxx\",\n    \"calories\": 500,\n    \"user\": null\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals/100002",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals",
+						"100002"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "meals createWithLocation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": null,\n    \"dateTime\": \"2019-05-30T10:00:00\",\n    \"description\": \"xxxxx\",\n    \"calories\": 500,\n    \"user\": null\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "meals delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals/100003",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals",
+						"100003"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "meals filter",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals/filter?startDateTime=2015-05-31T13:00&endDateTime=2015-05-31T20:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "startDateTime",
+							"value": "2015-05-31T13:00",
+							"equals": true
+						},
+						{
+							"key": "endDateTime",
+							"value": "2015-05-31T20:00",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "meals getAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
